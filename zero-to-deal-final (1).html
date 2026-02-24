@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Zero to Deal in 7 Days — No Fluff Real Estate</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700;800;900&family=Fira+Code:wght@400;500;600&display=swap');
+
+  :root {
+    --orange: #ff6b35;
+    --orange-glow: rgba(255,107,53,0.4);
+    --green: #22c55e;
+    --blue: #3b82f6;
+    --purple: #a855f7;
+    --red: #ef4444;
+    --yellow: #eab308;
+    --bg: #08080a;
+    --text: #ffffff;
+    --muted: rgba(255,255,255,0.4);
+    --dim: rgba(255,255,255,0.15);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    height: 100%; height: 100dvh;
+    overflow: hidden;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Outfit', sans-serif;
+    cursor: pointer;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .slide {
+    position: absolute;
+    inset: 0;
+    width: 100%; height: 100%; height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 8vh 8vw;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+    overflow: hidden;
+  }
+
+  .slide.active { opacity: 1; pointer-events: all; }
+
+  .slide.active .a-up { animation: aUp 0.5s cubic-bezier(0.16,1,0.3,1) forwards; }
+  .slide.active .a-left { animation: aLeft 0.5s cubic-bezier(0.16,1,0.3,1) forwards; }
+  .slide.active .a-scale { animation: aScale 0.6s cubic-bezier(0.16,1,0.3,1) forwards; }
+  .slide.active .a-fade { animation: aFade 0.6s ease forwards; }
+
+  .a-up, .a-left, .a-scale, .a-fade { opacity: 0; }
+
+  .d1 { animation-delay: 0.1s !important; }
+  .d2 { animation-delay: 0.2s !important; }
+  .d3 { animation-delay: 0.35s !important; }
+  .d4 { animation-delay: 0.5s !important; }
+  .d5 { animation-delay: 0.65s !important; }
+  .d6 { animation-delay: 0.8s !important; }
+  .d7 { animation-delay: 0.95s !important; }
+
+  .bebas { font-family: 'Bebas Neue', sans-serif; text-transform: uppercase; letter-spacing: 2px; }
+  .mono { font-family: 'Fira Code', monospace; }
+
+  .hero-stat {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(80px, 18vw, 200px);
+    line-height: 0.9;
+    letter-spacing: -2px;
+  }
+
+  .hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(48px, 9vw, 120px);
+    line-height: 0.95;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(36px, 6vw, 72px);
+    line-height: 1;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .body-text {
+    font-size: clamp(16px, 2.2vw, 22px);
+    line-height: 1.6;
+    color: var(--muted);
+    max-width: 85%;
+    font-weight: 400;
+  }
+
+  .label {
+    font-family: 'Fira Code', monospace;
+    font-size: clamp(10px, 1.3vw, 13px);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+
+  .day-marker {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: clamp(12px, 2vh, 24px);
+  }
+
+  .day-marker .day-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(48px, 8vw, 96px);
+    line-height: 1;
+    color: var(--orange);
+    text-shadow: 0 0 40px var(--orange-glow);
+  }
+
+  .day-marker .day-label {
+    font-family: 'Fira Code', monospace;
+    font-size: clamp(10px, 1.2vw, 12px);
+    color: var(--muted);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    writing-mode: vertical-lr;
+    transform: rotate(180deg);
+  }
+
+  .info-card {
+    padding: clamp(16px, 3vh, 36px) clamp(20px, 3.5vw, 44px);
+    background: rgba(255,255,255,0.025);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 14px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .stat-row {
+    display: flex;
+    gap: clamp(12px, 2vw, 24px);
+    flex-wrap: wrap;
+  }
+
+  .stat-box {
+    padding: clamp(14px, 3vh, 32px) clamp(18px, 3vw, 40px);
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    min-width: 180px;
+    flex: 1;
+  }
+
+  .stat-box .stat-val {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(32px, 5vw, 56px);
+    line-height: 1;
+    letter-spacing: 1px;
+  }
+
+  .stat-box .stat-label {
+    font-family: 'Fira Code', monospace;
+    font-size: clamp(9px, 1vw, 11px);
+    color: var(--muted);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-top: 6px;
+  }
+
+  .timeline {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(8px, 1.5vh, 14px);
+  }
+
+  .timeline-item {
+    display: flex;
+    align-items: flex-start;
+    gap: clamp(12px, 2vw, 20px);
+  }
+
+  .timeline-dot {
+    width: clamp(10px, 1.5vw, 14px);
+    height: clamp(10px, 1.5vw, 14px);
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 6px;
+    position: relative;
+  }
+
+  .timeline-dot::after {
+    content: '';
+    position: absolute;
+    top: 100%; left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: clamp(20px, 3vh, 36px);
+    background: rgba(255,255,255,0.06);
+  }
+
+  .timeline-item:last-child .timeline-dot::after { display: none; }
+
+  .timeline-text {
+    font-size: clamp(14px, 1.8vw, 20px);
+    line-height: 1.5;
+    color: rgba(255,255,255,0.55);
+  }
+
+  .timeline-text strong { color: #fff; font-weight: 700; }
+
+  .challenge-grid {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(8px, 1.5vh, 14px);
+  }
+
+  .challenge-item {
+    display: flex;
+    align-items: center;
+    gap: clamp(12px, 2vw, 18px);
+    padding: clamp(14px, 2.5vh, 26px) clamp(20px, 3vw, 32px);
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 10px;
+    border-left: 3px solid var(--red);
+  }
+
+  .challenge-icon { font-size: clamp(22px, 3vw, 32px); flex-shrink: 0; }
+
+  .challenge-text {
+    font-size: clamp(14px, 1.8vw, 20px);
+    color: rgba(255,255,255,0.55);
+    line-height: 1.5;
+  }
+
+  .challenge-text strong { color: #fff; }
+
+  /* Negotiation steps */
+  .neg-step {
+    display: flex;
+    align-items: center;
+    gap: clamp(14px, 2vw, 20px);
+    padding: clamp(14px, 2.5vh, 26px) clamp(20px, 3vw, 32px);
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 10px;
+    position: relative;
+  }
+
+  .neg-step::after {
+    content: '↓';
+    position: absolute;
+    bottom: -18px;
+    left: 30px;
+    font-size: 14px;
+    color: var(--dim);
+  }
+
+  .neg-step:last-child::after { display: none; }
+
+  .neg-icon {
+    width: clamp(36px, 5vw, 48px);
+    height: clamp(36px, 5vw, 48px);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: clamp(18px, 2.5vw, 24px);
+    flex-shrink: 0;
+  }
+
+  .neg-text {
+    font-size: clamp(14px, 1.8vw, 20px);
+    color: rgba(255,255,255,0.55);
+    line-height: 1.5;
+  }
+
+  .neg-text strong { color: #fff; }
+
+  .cta-card {
+    padding: clamp(24px, 4vh, 40px) clamp(28px, 4vw, 48px);
+    background: linear-gradient(135deg, rgba(255,107,53,0.08), rgba(255,107,53,0.02));
+    border: 1px solid rgba(255,107,53,0.2);
+    border-radius: 18px;
+  }
+
+  .cta-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: clamp(10px, 1.5vh, 16px);
+  }
+
+  .cta-check { color: var(--green); font-size: clamp(16px, 2vw, 20px); flex-shrink: 0; margin-top: 2px; }
+
+  .cta-text { font-size: clamp(15px, 2vw, 22px); color: rgba(255,255,255,0.7); line-height: 1.5; }
+  .cta-text strong { color: #fff; }
+
+  .progress {
+    position: fixed;
+    top: 0; left: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--orange), #ff8f5e);
+    transition: width 0.5s ease;
+    z-index: 100;
+  }
+
+  .slide-num {
+    position: fixed;
+    top: 20px; right: 28px;
+    font-family: 'Fira Code', monospace;
+    font-size: 11px;
+    color: var(--dim);
+    z-index: 100;
+  }
+
+  .amb {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(120px);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .amb-1 { width: 500px; height: 500px; top: -200px; left: -150px; background: var(--orange); opacity: 0.04; }
+  .amb-2 { width: 400px; height: 400px; bottom: -150px; right: 300px; background: var(--blue); opacity: 0.03; }
+
+  .clear-zone {
+    position: fixed;
+    bottom: 0; right: 0;
+    width: 350px; height: 420px;
+    pointer-events: none;
+    z-index: 50;
+  }
+
+  .nav-dots {
+    position: fixed;
+    left: 14px; top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    z-index: 100;
+  }
+
+  .nav-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--dim);
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+
+  .nav-dot.active {
+    background: var(--orange);
+    box-shadow: 0 0 8px var(--orange-glow);
+    transform: scale(1.5);
+  }
+
+  .arrow-btn {
+    position: fixed;
+    bottom: 24px; right: 24px;
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.05);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 100;
+    font-size: 15px;
+    color: var(--dim);
+    transition: all 0.2s;
+    border: none;
+    cursor: pointer;
+  }
+
+  .arrow-btn:active { background: rgba(255,107,53,0.2); color: var(--orange); }
+
+  @media (max-width: 600px) {
+    .slide { padding: 6vh 6vw; }
+    .clear-zone { width: 280px; height: 360px; }
+    .nav-dots { left: 8px; gap: 5px; }
+    .nav-dot { width: 5px; height: 5px; }
+  }
+
+  /* Desktop optimization */
+  @media (min-width: 1024px) {
+    .slide { padding: 8vh 10vw; }
+    .body-text { font-size: 20px; }
+    .clear-zone { width: 380px; height: 450px; }
+  }
+
+  @media (min-width: 1440px) {
+    .slide { padding: 8vh 12vw; }
+  }
+
+  
+  /* ===== CONFETTI ===== */
+  .confetti-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  @keyframes aUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes aLeft {
+    from { opacity: 0; transform: translateX(-30px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes aScale {
+    from { opacity: 0; transform: scale(0.85); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  @keyframes aFade {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes pulse {
+    0%,100% { opacity: 0.5; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.4); }
+  }
+</style>
+</head>
+<body>
+
+<div class="amb amb-1"></div>
+<div class="amb amb-2"></div>
+<div class="clear-zone"></div>
+<div class="progress" id="progress"></div>
+<div class="slide-num" id="slideNum"></div>
+<div class="nav-dots" id="navDots"></div>
+<button class="arrow-btn" id="arrowBtn">→</button>
+
+<!-- ============================================================ -->
+<!-- SLIDE 0: ZERO STATE -->
+<!-- ============================================================ -->
+<div class="slide active">
+  <div class="a-up d1" style="margin-bottom: 12px;">
+    <span class="label" style="color: var(--red); display: flex; align-items: center; gap: 8px;">
+      <span style="width:7px;height:7px;border-radius:50%;background:var(--red);box-shadow:0 0 12px rgba(239,68,68,0.4);animation:pulse 2s ease-in-out infinite;"></span>
+      DAY 0 — STARTING POINT
+    </span>
+  </div>
+  <div class="a-scale d2">
+    <div class="hero-stat" style="color: var(--red); text-shadow: 0 0 50px rgba(239,68,68,0.2);">ZERO</div>
+  </div>
+  <div class="a-up d3" style="margin-top: clamp(8px, 1.5vh, 16px);">
+    <div style="display: flex; gap: clamp(16px, 3vw, 32px); flex-wrap: wrap;">
+      <div>
+        <div class="bebas" style="font-size: clamp(36px, 6vw, 64px); color: var(--dim);">0 DEALS</div>
+      </div>
+      <div>
+        <div class="bebas" style="font-size: clamp(36px, 6vw, 64px); color: var(--dim);">$0</div>
+      </div>
+    </div>
+  </div>
+  <div class="a-up d4" style="margin-top: clamp(16px, 3vh, 28px);">
+    <p class="body-text">No pipeline. No leads. No agent relationships. No team. Starting from absolutely nothing.</p>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 1: FIRST DEAL — SIGNING COMPLETE -->
+<!-- ============================================================ -->
+<div class="slide" id="confettiSlide">
+  <canvas class="confetti-canvas" id="confettiCanvas"></canvas>
+  <div class="a-up d1" style="margin-bottom: 12px;">
+    <span class="label" style="color: var(--green); display: flex; align-items: center; gap: 8px;">
+      <span style="width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 12px rgba(34,197,94,0.4);animation:pulse 2s ease-in-out infinite;"></span>
+      7 DAYS LATER
+    </span>
+  </div>
+  <div class="a-scale d2" style="margin-bottom: clamp(32px, 5vh, 56px);">
+    <div style="width: clamp(220px, 32vw, 360px); border-radius: 16px; overflow: hidden; border: 1px solid rgba(34,197,94,0.2); box-shadow: 0 8px 40px rgba(34,197,94,0.1);">
+      <img src="data:image/png;base64,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AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA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" alt="Signing Complete" style="width: 100%; display: block;">
+    </div>
+  </div>
+  <div class="a-scale d3" style="margin-top: clamp(24px, 4vh, 40px);">
+    <div class="hero-stat" style="color: var(--green); text-shadow: 0 0 60px rgba(34,197,94,0.3); font-size: clamp(60px, 14vw, 160px);">$20,000</div>
+    <div class="label" style="color: var(--muted); margin-top: 6px;">FIRST DEAL — PROJECTED PROFIT</div>
+  </div>
+  <div class="a-up d4" style="margin-top: clamp(14px, 2.5vh, 24px);">
+    <p class="body-text">Using nothing but AI. Working 1-2 hours a day. No team. No existing pipeline. Just the tools and the framework.</p>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 1: THE RULES -->
+<!-- ============================================================ -->
+<div class="slide">
+  <div class="a-up d1">
+    <span class="label" style="color: var(--muted);">THE CHALLENGE</span>
+  </div>
+  <div class="a-up d2" style="margin-top: 8px;">
+    <h2 class="section-title">The Rules</h2>
+  </div>
+  <div class="stat-row" style="margin-top: clamp(24px, 4vh, 40px);">
+    <div class="stat-box a-scale d3">
+      <div class="stat-val" style="color: var(--orange);">1-2 HRS</div>
+      <div class="stat-label">Per Day Maximum</div>
+    </div>
+    <div class="stat-box a-scale d4">
+      <div class="stat-val" style="color: var(--green);">$0</div>
+      <div class="stat-label">Starting Pipeline</div>
+    </div>
+    <div class="stat-box a-scale d5">
+      <div class="stat-val" style="color: var(--blue);">AI ONLY</div>
+      <div class="stat-label">No Team, No VA</div>
+    </div>
+  </div>
+  <div class="a-up d5" style="margin-top: clamp(20px, 3vh, 32px);">
+    <p class="body-text">Build a fully automated real estate investing business from scratch — proving this works as a side hustle, not a full-time grind.</p>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 2: THE FRAMEWORK — PHASE 1/2/3 -->
+<!-- ============================================================ -->
+<div class="slide">
+  <div class="a-up d1">
+    <span class="label" style="color: var(--orange);">THE SYSTEM</span>
+  </div>
+  <div class="a-up d2" style="margin-top: 8px;">
+    <h2 class="section-title">The Framework</h2>
+  </div>
+  <div style="margin-top: clamp(24px, 4vh, 36px); display: flex; flex-direction: column; gap: clamp(12px, 2vh, 20px);">
+    <div class="info-card a-left d3" style="border-left: 4px solid var(--orange);">
+      <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+        <span class="bebas" style="font-size: clamp(14px, 2vw, 18px); color: var(--orange); background: rgba(255,107,53,0.12); padding: 4px 12px; border-radius: 6px;">PHASE 1</span>
+        <span class="bebas" style="font-size: clamp(24px, 3.5vw, 36px); color: var(--orange);">LEAD GENERATION</span>
+      </div>
+      <div style="font-size: clamp(13px, 1.6vw, 16px); color: var(--muted); line-height: 1.6;">AI agent reaches out to <strong style="color:#fff;">Gatekeepers</strong> at scale → AI vets the lead → I pick up the phone and call the qualified ones. Long-term, my voice bot takes over the calls entirely.</div>
+    </div>
+    <div class="info-card a-left d4" style="border-left: 4px solid var(--green);">
+      <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+        <span class="bebas" style="font-size: clamp(14px, 2vw, 18px); color: var(--green); background: rgba(34,197,94,0.12); padding: 4px 12px; border-radius: 6px;">PHASE 2</span>
+        <span class="bebas" style="font-size: clamp(24px, 3.5vw, 36px); color: var(--green);">CALL & COMP</span>
+      </div>
+      <div style="font-size: clamp(13px, 1.6vw, 16px); color: var(--muted); line-height: 1.6;">I call the agent. Our tool gives me a <strong style="color:#fff;">property analysis before I even pick up the phone</strong>. If the numbers work, I'm already ready to make a move.</div>
+    </div>
+    <div class="info-card a-left d5" style="border-left: 4px solid var(--blue);">
+      <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+        <span class="bebas" style="font-size: clamp(14px, 2vw, 18px); color: var(--blue); background: rgba(59,130,246,0.12); padding: 4px 12px; border-radius: 6px;">PHASE 3</span>
+        <span class="bebas" style="font-size: clamp(24px, 3.5vw, 36px); color: var(--blue);">CLOSE</span>
+      </div>
+      <div style="font-size: clamp(13px, 1.6vw, 16px); color: var(--muted); line-height: 1.6;">If it makes sense — <strong style="color:#fff;">close the deal</strong>. Send the contract, negotiate, get it signed. AI got you here. Your skill finishes it.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 3: THE TOOL STACK (UPDATED) -->
+<!-- ============================================================ -->
+<div class="slide">
+  <div class="a-up d1">
+    <span class="label" style="color: var(--muted);">THE TOOL STACK</span>
+  </div>
+  <div class="a-up d2" style="margin-top: 8px;">
+    <h2 class="section-title">4 Tools. <span style="color: var(--orange);">Zero Employees.</span></h2>
+  </div>
+  <div class="timeline" style="margin-top: clamp(24px, 4vh, 36px);">
+    <div class="timeline-item a-left d3">
+      <div class="timeline-dot" style="background: var(--orange);"></div>
+      <div class="timeline-text"><strong>Batch Leads</strong> — Pull my list of <strong style="color:var(--orange);">Gatekeepers</strong>. 16K+ active agents in Atlanta alone.</div>
+    </div>
+    <div class="timeline-item a-left d4">
+      <div class="timeline-dot" style="background: var(--green);"></div>
+      <div class="timeline-text"><strong>Investor Base</strong> — Pull my list of <strong style="color:var(--green);">Checkbooks</strong>. Verified cash buyers ready to close.</div>
+    </div>
+    <div class="timeline-item a-left d5">
+      <div class="timeline-dot" style="background: var(--blue);"></div>
+      <div class="timeline-text"><strong>VAPI</strong> — Voice AI agent. When I'm ready for my bot to get on the phone with a realtor, this is the tool.</div>
+    </div>
+    <div class="timeline-item a-left d6">
+      <div class="timeline-dot" style="background: var(--purple);"></div>
+      <div class="timeline-text"><strong>Deal Generator</strong> — The tool I built to integrate all my AI systems in one place. Texting, calling, bots, pipeline — everything.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 4: DAY 1 — DATA PULL -->
+<!-- ============================================================ -->
+<div class="slide">
+  <div class="a-up d1">
+    <div class="day-marker">
+      <span class="day-num">01</span>
+      <span class="day-label">DAY</span>
+    </div>
+  </div>
+  <div class="a-up d2">
+    <h2 class="section-title">The Data Pull</h2>
+  </div>
+  <div class="a-scale d3" style="margin-top: clamp(16px, 3vh, 28px);">
+    <div class="hero-stat" style="color: var(--orange);">17,601</div>
+    <div class="label" style="color: var(--muted); margin-top: 6px;">AGENTS PULLED IN ATLANTA</div>
+  </div>
+  <div class="a-up d4" style="margin-top: clamp(20px, 3vh, 28px);">
+    <p class="body-text">Pulled every agent in the metro. But here's the thing — the majority of agents don't close a single deal per year. Active listing agents are the low-hanging fruit.</p>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 5: DAY 2 — FILTER TARGET DEPLOY -->
+<!-- ============================================================ -->
+<div class="slide">
+  <div class="a-up d1">
+    <div class="day-marker">
+      <span class="day-num">02</span>
+      <span class="day-label">DAY</span>
+    </div>
+  </div>
+  <div class="a-up d2">
+    <h2 class="section-title">Filter. Target. <span style="color:var(--green);">Deploy.</span></h2>
+  </div>
+  <div style="margin-top: clamp(20px, 3vh, 36px); display: flex; gap: clamp(12px, 2vw, 20px); flex-wrap: wrap; align-items: center;">
+    <div class="stat-box a-scale d3">
+      <div class="stat-val" style="color: var(--dim); text-decoration: line-through;">17,601</div>
+      <div class="stat-label">Total Agents</div>
+    </div>
+    <div class="a-scale d3" style="display:flex;align-items:center;font-size:28px;color:var(--orange);">→</div>
+    <div class="stat-box a-scale d4">
+      <div class="stat-val" style="color: var(--green);">ACTIVE</div>
+      <div class="stat-label">Listing Agents Only</div>
+    </div>
+  </div>
+  <div class="a-up d5" style="margin-top: clamp(20px, 3vh, 28px);">
+    <p class="body-text">Filtered to agents with active listings — the ones actually moving properties right now. These are our <strong style="color:var(--orange);">Gatekeepers</strong>. AI outreach goes live.</p>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 6: DAY 3 — AI OUTREACH -->
+<!-- ============================================================ -->
+<div class="slide">
+  <div class="a-up d1">
+    <div class="day-marker">
+      <span class="day-num">03</span>
+      <span class="day-label">DAY</span>
+    </div>
+  </div>
+  <div class="a-up d2">
+    <h2 class="section-title">AI Outreach <span style="color:var(--green);">Goes Live</span></h2>
+  </div>
+  <div class="a-up d3" style="margin-top: clamp(20px, 3vh, 32px);">
+    <p class="body-text">Dual AI systems running simultaneously — voice agent calling Gatekeepers, automated text sequences following up. Volume that would take a team of 10 to match.</p>
+  </div>
+  <div style="margin-top: clamp(20px, 3vh, 32px); display: flex; gap: clamp(12px, 2vw, 20px); flex-wrap: wrap;">
+    <div class="stat-box a-scale d4" style="border-left: 3px solid var(--green);">
+      <div class="stat-val" style="color: var(--green);">24/7</div>
+      <div class="stat-label">Calls Running</div>
+    </div>
+    <div class="stat-box a-scale d5" style="border-left: 3px solid var(--blue);">
+      <div class="stat-val" style="color: var(--blue);">AUTO</div>
+      <div class="stat-label">Text Follow-Ups</div>
+    </div>
+    <div class="stat-box a-scale d6" style="border-left: 3px solid var(--orange);">
+      <div class="stat-val" style="color: var(--orange);">~2 HRS</div>
+      <div class="stat-label">My Time / Day</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 7: DAY 4 — A LEAD DROPS IN -->
+<!-- ============================================================ -->
+<div class="slide">
+  <div class="a-up d1">
+    <div class="day-marker">
+      <span class="day-num">04</span>
+      <span class="day-label">DAY</span>
+    </div>
+  </div>
+  <div class="a-up d2">
+    <h2 class="section-title">A Lead <span style="color:var(--orange);">Drops In</span></h2>
+  </div>
+  <div class="info-card a-scale d3" style="margin-top: clamp(20px, 3vh, 32px); border-left: 4px solid var(--orange);">
+    <div class="label" style="color: var(--orange); margin-bottom: 12px;">PROPERTY PROFILE</div>
+    <div style="display: flex; flex-direction: column; gap: 10px;">
+      <div style="display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.04); padding-bottom: 8px;">
+        <span style="color: var(--muted); font-size: clamp(13px, 1.5vw, 15px);">Type</span>
+        <span style="font-weight: 700; font-size: clamp(14px, 1.6vw, 16px);">Distressed / Inherited</span>
+      </div>
+      <div style="display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.04); padding-bottom: 8px;">
+        <span style="color: var(--muted); font-size: clamp(13px, 1.5vw, 15px);">In Family</span>
+        <span style="font-weight: 700; font-size: clamp(14px, 1.6vw, 16px);">50+ Years</span>
+      </div>
+      <div style="display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.04); padding-bottom: 8px;">
+        <span style="color: var(--muted); font-size: clamp(13px, 1.5vw, 15px);">Condition</span>
+        <span style="font-weight: 700; font-size: clamp(14px, 1.6vw, 16px);">No Power / No Water</span>
+      </div>
+      <div style="display: flex; justify-content: space-between;">
+        <span style="color: var(--muted); font-size: clamp(13px, 1.5vw, 15px);">Seller</span>
+        <span style="font-weight: 700; font-size: clamp(14px, 1.6vw, 16px);">Elderly / Emotionally Attached</span>
+      </div>
+    </div>
+  </div>
+  <div class="a-up d5" style="margin-top: clamp(16px, 2.5vh, 24px);">
+    <p style="font-size: clamp(14px, 1.6vw, 17px); color: var(--dim); max-width: 85%; line-height: 1.5;">This is exactly the kind of lead AI is designed to find at scale. The property needs to move — the question is whether we can make it happen.</p>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 8: DAY 5 — THE AGENT CALL -->
+<!-- ============================================================ -->
+<div class="slide">
+  <div class="a-up d1">
+    <div class="day-marker">
+      <span class="day-num">05</span>
+      <span class="day-label">DAY</span>
+    </div>
+  </div>
+  <div class="a-up d2">
+    <h2 class="section-title">I Call <span style="color: var(--orange);">the Agent</span></h2>
+  </div>
+  <div class="a-up d3" style="margin-top: clamp(20px, 3vh, 32px);">
+    <p class="body-text">AI found the lead. AI vetted it. Now it's Phase 2 — I pick up the phone and call the Gatekeeper. Our tool already gave me the property analysis before I even dialed.</p>
+  </div>
+  <div class="info-card a-scale d4" style="margin-top: clamp(20px, 3vh, 28px); border-left: 4px solid var(--orange); background: rgba(255,107,53,0.03);">
+    <div style="font-size: clamp(15px, 1.8vw, 18px); color: rgba(255,255,255,0.65); line-height: 1.6;">
+      This entire call was <strong style="color:var(--orange);">recorded</strong>. Every word. The exact script, the objection handling, how I navigated the conversation — all documented.
+    </div>
+  </div>
+  <div class="a-up d5" style="margin-top: clamp(16px, 2.5vh, 24px);">
+    <p style="font-size: clamp(13px, 1.4vw, 15px); color: var(--dim); font-style: italic;">More on where to find that in a minute...</p>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 9: DAY 5-6 — THE COMPETITION -->
+<!-- ============================================================ -->
+<div class="slide">
+  <div class="a-up d1">
+    <div class="day-marker">
+      <span class="day-num">06</span>
+      <span class="day-label">DAY</span>
+    </div>
+  </div>
+  <div class="a-up d2">
+    <h2 class="section-title" style="color: var(--red);">The Competition</h2>
+  </div>
+  <div class="challenge-grid" style="margin-top: clamp(24px, 4vh, 36px);">
+    <div class="challenge-item a-left d3">
+      <div class="challenge-icon">💰</div>
+      <div class="challenge-text">Another bidder offered <strong>more money</strong></div>
+    </div>
+    <div class="challenge-item a-left d4">
+      <div class="challenge-icon">👀</div>
+      <div class="challenge-text">Someone offered to buy <strong>sight unseen</strong></div>
+    </div>
+    <div class="challenge-item a-left d5">
+      <div class="challenge-icon">🏠</div>
+      <div class="challenge-text">Seller <strong>emotionally tied</strong> to a 50-year family home</div>
+    </div>
+    <div class="challenge-item a-left d6">
+      <div class="challenge-icon">📝</div>
+      <div class="challenge-text">Getting the seller to actually <strong>sign</strong> was the real challenge</div>
+    </div>
+  </div>
+  <div class="a-up d6" style="margin-top: clamp(16px, 2.5vh, 24px);">
+    <p style="font-size: clamp(15px, 1.8vw, 18px); color: var(--red); font-weight: 600;">Most people walk away here.</p>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 10: THE NEGOTIATION — BACK & FORTH -->
+<!-- ============================================================ -->
+<div class="slide">
+  <div class="a-up d1">
+    <span class="label" style="color: var(--yellow);">THE NEGOTIATION</span>
+  </div>
+  <div class="a-up d2" style="margin-top: 8px;">
+    <h2 class="section-title">The <span style="color: var(--yellow);">Song & Dance</span></h2>
+  </div>
+  <div style="margin-top: clamp(20px, 3.5vh, 32px); display: flex; flex-direction: column; gap: clamp(20px, 3vh, 28px);">
+    <div class="neg-step a-left d3">
+      <div class="neg-icon" style="background: rgba(255,107,53,0.1);">📤</div>
+      <div class="neg-text"><strong>I put the offer together</strong> and send it to the agent</div>
+    </div>
+    <div class="neg-step a-left d4">
+      <div class="neg-icon" style="background: rgba(59,130,246,0.1);">🗣️</div>
+      <div class="neg-text">Agent takes it to the seller — <strong>back and forth begins</strong></div>
+    </div>
+    <div class="neg-step a-left d5" style="border-left: 3px solid var(--red);">
+      <div class="neg-icon" style="background: rgba(239,68,68,0.1);">🚫</div>
+      <div class="neg-text">Seller <strong style="color:var(--red);">almost backs out</strong> — 50 years of memories, doesn't want to let go</div>
+    </div>
+    <div class="neg-step a-left d6" style="border-left: 3px solid var(--green);">
+      <div class="neg-icon" style="background: rgba(34,197,94,0.1);">✅</div>
+      <div class="neg-text">Finally comes to the table — <strong style="color:var(--green);">"We want to do it."</strong></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 11: DAY 7 — CONTRACT SIGNED -->
+<!-- ============================================================ -->
+<div class="slide" id="contractSlide">
+  <canvas class="confetti-canvas" id="confettiCanvas2"></canvas>
+  <div class="a-up d1">
+    <div class="day-marker">
+      <span class="day-num">07</span>
+      <span class="day-label">DAY</span>
+    </div>
+  </div>
+  <div class="a-scale d2" style="margin-top: 8px;">
+    <div class="hero-stat" style="color: var(--green); text-shadow: 0 0 60px rgba(34,197,94,0.3);">CONTRACT<br>SIGNED</div>
+  </div>
+  <div class="a-up d4" style="margin-top: clamp(20px, 3vh, 28px);">
+    <p class="body-text">From zero pipeline to a signed contract in 7 days. Working less than 2 hours a day. AI handled the volume — I closed the deal.</p>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 12: REAL TALK -->
+<!-- ============================================================ -->
+<div class="slide">
+  <div class="a-up d1">
+    <span class="label" style="color: var(--muted);">REAL TALK</span>
+  </div>
+  <div class="a-up d2" style="margin-top: 8px;">
+    <h2 class="section-title">This Isn't <span style="color:var(--orange);">Push-Button Easy</span></h2>
+  </div>
+  <div class="timeline" style="margin-top: clamp(24px, 4vh, 36px);">
+    <div class="timeline-item a-left d3">
+      <div class="timeline-dot" style="background: var(--orange);"></div>
+      <div class="timeline-text"><strong>AI handles the volume</strong> — the outreach, the qualification, the follow-up. That's the hard part it solves.</div>
+    </div>
+    <div class="timeline-item a-left d4">
+      <div class="timeline-dot" style="background: var(--orange);"></div>
+      <div class="timeline-text"><strong>You still close the deal.</strong> The agent call, the negotiation, the human side — that's you.</div>
+    </div>
+    <div class="timeline-item a-left d5">
+      <div class="timeline-dot" style="background: var(--orange);"></div>
+      <div class="timeline-text"><strong>You won't win every one.</strong> Competing bidders are normal. The framework gives you more at-bats.</div>
+    </div>
+    <div class="timeline-item a-left d6">
+      <div class="timeline-dot" style="background: var(--orange);"></div>
+      <div class="timeline-text"><strong>Real situations, real people.</strong> Navigating with integrity is part of the process.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 13: MULTIPLY THIS -->
+<!-- ============================================================ -->
+<div class="slide">
+  <div class="a-up d1">
+    <span class="label" style="color: var(--green);">THE BIGGER PICTURE</span>
+  </div>
+  <div class="a-up d2" style="margin-top: 8px;">
+    <h2 class="section-title">Now Multiply This</h2>
+  </div>
+  <div class="a-up d3" style="margin-top: clamp(20px, 3vh, 28px);">
+    <p class="body-text">One deal in 7 days while working 1-2 hours. The system doesn't stop. While you're at your day job, the AI is still calling, still qualifying, still feeding you opportunities.</p>
+  </div>
+  <div style="margin-top: clamp(24px, 4vh, 36px); display: flex; gap: clamp(12px, 2vw, 20px); flex-wrap: wrap;">
+    <div class="stat-box a-scale d4" style="border-top: 3px solid var(--orange);">
+      <div class="stat-val" style="color: var(--orange);">DAY 7</div>
+      <div class="stat-label">First Deal</div>
+    </div>
+    <div class="stat-box a-scale d5" style="border-top: 3px solid var(--green);">
+      <div class="stat-val" style="color: var(--green);">53</div>
+      <div class="stat-label">Days Remaining</div>
+    </div>
+    <div class="stat-box a-scale d6" style="border-top: 3px solid var(--blue);">
+      <div class="stat-val" style="color: var(--blue);">∞</div>
+      <div class="stat-label">The AI Doesn't Stop</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 14: CTA -->
+<!-- ============================================================ -->
+<div class="slide">
+  <div class="a-up d1">
+    <span class="label" style="color: var(--orange);">WANT THE FULL PLAYBOOK?</span>
+  </div>
+  <div class="a-up d2" style="margin-top: 8px;">
+    <h2 class="section-title">Everything's Inside<br>the <span style="color:var(--orange);">Community</span></h2>
+  </div>
+  <div class="cta-card a-scale d3" style="margin-top: clamp(20px, 3vh, 32px);">
+    <div class="cta-item">
+      <span class="cta-check">✓</span>
+      <span class="cta-text"><strong>The full agent call recording</strong> — hear exactly what I said</span>
+    </div>
+    <div class="cta-item">
+      <span class="cta-check">✓</span>
+      <span class="cta-text"><strong>The exact script</strong> — copy the same game plan</span>
+    </div>
+    <div class="cta-item">
+      <span class="cta-check">✓</span>
+      <span class="cta-text"><strong>Tool stack breakdown</strong> — every tool, how it's configured</span>
+    </div>
+    <div class="cta-item">
+      <span class="cta-check">✓</span>
+      <span class="cta-text"><strong>Follow the challenge live</strong> — day by day, deal by deal</span>
+    </div>
+  </div>
+  <div class="a-up d5" style="margin-top: clamp(20px, 3vh, 28px);">
+    <p style="font-size: clamp(16px, 2vw, 20px); font-weight: 700; color: var(--orange);">Day 7. First deal done. 53 more days to go.</p>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<script>
+const slides = document.querySelectorAll('.slide');
+const total = slides.length;
+let current = 0;
+let tx = 0, ty = 0;
+
+const nav = document.getElementById('navDots');
+for (let i = 0; i < total; i++) {
+  const d = document.createElement('div');
+  d.className = 'nav-dot' + (i === 0 ? ' active' : '');
+  d.addEventListener('click', e => { e.stopPropagation(); go(i); });
+  nav.appendChild(d);
+}
+updateUI();
+
+function resetAnims(s) {
+  s.querySelectorAll('.a-up,.a-left,.a-scale,.a-fade').forEach(el => {
+    el.style.opacity = '0';
+    if (el.classList.contains('a-up')) el.style.transform = 'translateY(30px)';
+    else if (el.classList.contains('a-left')) el.style.transform = 'translateX(-30px)';
+    else if (el.classList.contains('a-scale')) el.style.transform = 'scale(0.85)';
+  });
+}
+
+function playAnims(s) {
+  s.querySelectorAll('.a-up,.a-left,.a-scale,.a-fade').forEach(el => el.removeAttribute('style'));
+}
+
+function go(i) {
+  if (i === current || i < 0 || i >= total) return;
+  slides[current].classList.remove('active');
+  resetAnims(slides[current]);
+  current = i;
+  resetAnims(slides[current]);
+  void slides[current].offsetWidth;
+  playAnims(slides[current]);
+  slides[current].classList.add('active');
+  updateUI();
+}
+
+function updateUI() {
+  document.getElementById('slideNum').textContent = (current + 1) + ' / ' + total;
+  document.getElementById('progress').style.width = ((current + 1) / total * 100) + '%';
+  document.querySelectorAll('.nav-dot').forEach((d, i) => d.classList.toggle('active', i === current));
+  document.getElementById('arrowBtn').textContent = current === total - 1 ? '✓' : '→';
+}
+
+document.body.addEventListener('click', e => {
+  if (e.target.closest('.nav-dot')) return;
+  if (current < total - 1) go(current + 1);
+});
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); go(current + 1); }
+  else if (e.key === 'ArrowLeft') { e.preventDefault(); go(current - 1); }
+});
+
+document.addEventListener('touchstart', e => { tx = e.changedTouches[0].screenX; ty = e.changedTouches[0].screenY; }, { passive: true });
+
+// ===== CONFETTI =====
+const confettiCanvases = {
+  1: document.getElementById('confettiCanvas'),
+  12: document.getElementById('confettiCanvas2'),
+};
+let confettiPieces = [];
+let confettiRunning = false;
+let confettiFrame = null;
+let activeConfettiCtx = null;
+let activeConfettiCanvas = null;
+
+function resizeConfetti() {
+  if (!activeConfettiCanvas) return;
+  activeConfettiCanvas.width = activeConfettiCanvas.offsetWidth;
+  activeConfettiCanvas.height = activeConfettiCanvas.offsetHeight;
+}
+
+function createConfetti(count) {
+  confettiPieces = [];
+  const colors = ['#22c55e','#4ade80','#86efac','#ff6b35','#ff8f5e','#3b82f6','#60a5fa','#a855f7','#c084fc','#eab308','#fde047','#ffffff'];
+  const W = activeConfettiCanvas.width;
+  const H = activeConfettiCanvas.height;
+  for (let i = 0; i < count; i++) {
+    const shape = Math.random() > 0.5 ? 'rect' : 'circle';
+    confettiPieces.push({
+      x: Math.random() * W,
+      y: -10 - Math.random() * H * 0.8,
+      w: shape === 'rect' ? 5 + Math.random() * 9 : 3 + Math.random() * 5,
+      h: shape === 'rect' ? 8 + Math.random() * 14 : 3 + Math.random() * 5,
+      shape,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      vx: (Math.random() - 0.5) * 4,
+      vy: 2 + Math.random() * 4,
+      rotation: Math.random() * 360,
+      rotSpeed: (Math.random() - 0.5) * 10,
+      opacity: 0.6 + Math.random() * 0.4,
+      wobble: Math.random() * 12,
+      wobbleSpeed: 0.02 + Math.random() * 0.05,
+      wobbleT: Math.random() * Math.PI * 2,
+    });
+  }
+}
+
+function drawConfetti() {
+  if (!activeConfettiCtx) return;
+  activeConfettiCtx.clearRect(0, 0, activeConfettiCanvas.width, activeConfettiCanvas.height);
+  let alive = 0;
+  for (const p of confettiPieces) {
+    if (p.y > activeConfettiCanvas.height + 30) continue;
+    alive++;
+    p.wobbleT += p.wobbleSpeed;
+    p.x += p.vx + Math.sin(p.wobbleT) * p.wobble * 0.06;
+    p.y += p.vy;
+    p.rotation += p.rotSpeed;
+    p.vy += 0.025;
+
+    activeConfettiCtx.save();
+    activeConfettiCtx.translate(p.x, p.y);
+    activeConfettiCtx.rotate((p.rotation * Math.PI) / 180);
+    activeConfettiCtx.globalAlpha = p.opacity;
+    activeConfettiCtx.fillStyle = p.color;
+    if (p.shape === 'rect') {
+      activeConfettiCtx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+    } else {
+      activeConfettiCtx.beginPath();
+      activeConfettiCtx.arc(0, 0, p.w / 2, 0, Math.PI * 2);
+      activeConfettiCtx.fill();
+    }
+    activeConfettiCtx.restore();
+  }
+  if (alive > 0) {
+    confettiFrame = requestAnimationFrame(drawConfetti);
+  } else {
+    confettiRunning = false;
+    activeConfettiCtx.clearRect(0, 0, activeConfettiCanvas.width, activeConfettiCanvas.height);
+  }
+}
+
+function startConfetti(slideIdx) {
+  stopConfetti();
+  const canvas = confettiCanvases[slideIdx];
+  if (!canvas) return;
+  activeConfettiCanvas = canvas;
+  activeConfettiCtx = canvas.getContext('2d');
+  confettiRunning = true;
+  resizeConfetti();
+  createConfetti(200);
+  drawConfetti();
+}
+
+function stopConfetti() {
+  confettiRunning = false;
+  if (confettiFrame) cancelAnimationFrame(confettiFrame);
+  if (activeConfettiCtx && activeConfettiCanvas) {
+    activeConfettiCtx.clearRect(0, 0, activeConfettiCanvas.width, activeConfettiCanvas.height);
+  }
+}
+
+const origGo = go;
+go = function(i) {
+  origGo(i);
+  if (i === 1 || i === 12) {
+    setTimeout(() => startConfetti(i), 350);
+  } else {
+    stopConfetti();
+  }
+};
+
+window.addEventListener('resize', () => {
+  if (confettiRunning) resizeConfetti();
+});
+
+document.addEventListener('touchend', e => {
+  const dx = e.changedTouches[0].screenX - tx;
+  const dy = e.changedTouches[0].screenY - ty;
+  if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50) { dx < 0 ? go(current + 1) : go(current - 1); }
+}, { passive: true });
+</script>
+
+</body>
+</html>
